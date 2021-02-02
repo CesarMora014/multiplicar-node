@@ -14,28 +14,21 @@ module.exports.listarTabla = (base, limite) => {
         console.log(`${base} * ${i} = ${base * i}\n`);
 }
 
-module.exports.crearArchivo = (base, limite) => {
+module.exports.crearArchivo = async (base, limite) => {
 
-    return new Promise((resolve, reject) => {
+    if (!Number(base)) {
+        reject("Error: El valor introducido no es un numero");
+        return;
+    }
 
-        if (!Number(base)) {
-            reject("Error: El valor introducido no es un numero");
-            return;
-        }
+    let data = '';
 
-        let data = '';
+    for (let i = 1; i <= limite; i++)
+        data += `${base} * ${i} = ${base * i}\n`;
 
-        for (let i = 1; i <= limite; i++)
-            data += `${base} * ${i} = ${base * i}\n`;
+    fileSystem.writeFile(`archivos/tabla-base-${base}-limite-${limite}.txt`, data);
 
-        fileSystem.writeFile(`archivos/tabla-base-${base}-limite-${limite}.txt`, data, err => {
-            if (err)
-                reject(err);
-            else
-                resolve(`tabla-base-${base}-limite-${limite}.txt`);
-        });
-
-    });
+    return `tabla-base-${base}-limite-${limite}.txt`
 
 }
 
